@@ -5,7 +5,7 @@ const Event = require("../model/event");
 const ErrorHandler = require("../utils/ErrorHandler");
 const { isSeller, isAdmin, isAuthenticated } = require("../middleware/auth");
 const router = express.Router();
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 // create event
 router.post(
