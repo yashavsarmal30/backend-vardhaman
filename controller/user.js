@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../model/user");
 const router = express.Router();
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 const ErrorHandler = require("../utils/ErrorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const jwt = require("jsonwebtoken");
@@ -19,7 +19,7 @@ router.post("/create-user", async (req, res, next) => {
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    const myCloud = await cloudinary.uploader.upload(avatar, {
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
       folder: "avatars",
     });
 
@@ -221,9 +221,9 @@ router.put(
       if (req.body.avatar !== "") {
         const imageId = existsUser.avatar.public_id;
 
-        await cloudinary.uploader.destroy(imageId);
+        await cloudinary.v2.uploader.destroy(imageId);
 
-        const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
+        const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
           folder: "avatars",
           width: 150,
         });
@@ -400,7 +400,7 @@ router.delete(
 
       const imageId = user.avatar.public_id;
 
-      await cloudinary.uploader.destroy(imageId);
+      await cloudinary.v2.uploader.destroy(imageId);
 
       await User.findByIdAndDelete(req.params.id);
 
